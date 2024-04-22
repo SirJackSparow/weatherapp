@@ -32,8 +32,7 @@ class WeatherAppBar extends StatelessWidget {
               onTap: () {
                 onTap.call();
               },
-              child: Icon(Icons.info_outline_sharp,
-                  color: WeatherAppColor.whiteColor)),
+              child: Icon(Icons.search, color: WeatherAppColor.whiteColor)),
         )
       ], // Removes shadow
     );

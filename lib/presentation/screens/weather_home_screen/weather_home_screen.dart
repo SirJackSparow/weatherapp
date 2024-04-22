@@ -37,53 +37,43 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Weather"),
-          leading: const Icon(Icons.flutter_dash),
-          actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search))
-          ],
-        ),
-        body:
-            BlocBuilder<InternateConnectivityBloc, InternateConnectivityState>(
-          builder: (context, state) {
-            if (state is ConnectedState) {
-              return BlocConsumer<WeatherHomeControllerBloc,
-                  WeatherHomeControllerState>(
-                buildWhen: (previous, current) {
-                  return (previous is CurrentCityWeatherInfoLoading &&
-                          current is CurrentCityDataLoaded) ||
-                      (current is CurrentCityDataLoaded &&
-                          previous is CurrentCityDataLoaded);
-                },
-                listenWhen: (previous, current) {
-                  return previous != current;
-                },
-                builder: (context, state) {
-                  if (state is CurrentCityDataLoaded) {
-                    WeatherModel weatherCityModel = state.currentCityData;
-                    weatherCityModel.isCurrentCity = true;
-                    log(weatherCityModel.cityImageURL.toString());
-                    return WeatherUIWidget(
-                      weatherModel: weatherCityModel,
-                    );
-                  }
-                  return Container();
-                },
-                listener:
-                    (BuildContext context, WeatherHomeControllerState state) {
-                  if (state is CurrentCityWeatherInfoLoadingError) {
-                    log(state.errorMessage);
-                  }
-                },
-              );
-            } else if (state is NotConnectedState) {
-              log("Not connected");
-            }
-            return Container();
-          },
-        ));
+    return Scaffold(body:
+        BlocBuilder<InternateConnectivityBloc, InternateConnectivityState>(
+      builder: (context, state) {
+        if (state is ConnectedState) {
+          return BlocConsumer<WeatherHomeControllerBloc,
+              WeatherHomeControllerState>(
+            buildWhen: (previous, current) {
+              return (previous is CurrentCityWeatherInfoLoading &&
+                      current is CurrentCityDataLoaded) ||
+                  (current is CurrentCityDataLoaded &&
+                      previous is CurrentCityDataLoaded);
+            },
+            listenWhen: (previous, current) {
+              return previous != current;
+            },
+            builder: (context, state) {
+              if (state is CurrentCityDataLoaded) {
+                WeatherModel weatherCityModel = state.currentCityData;
+                weatherCityModel.isCurrentCity = true;
+                return WeatherUIWidget(
+                  weatherModel: weatherCityModel,
+                );
+              }
+              return Container();
+            },
+            listener: (BuildContext context, WeatherHomeControllerState state) {
+              if (state is CurrentCityWeatherInfoLoadingError) {
+                log(state.errorMessage);
+              }
+            },
+          );
+        } else if (state is NotConnectedState) {
+          log("Not connected");
+        }
+        return Container();
+      },
+    ));
   }
 
   @override
