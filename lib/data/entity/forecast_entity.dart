@@ -8,8 +8,8 @@ class ForeCastModel {
   });
 
   final String? cod;
-  final int? message;
-  final int? cnt;
+  final num? message;
+  final num? cnt;
   final List<ListElement> list;
   final City? city;
 
@@ -39,14 +39,14 @@ class City {
     required this.sunset,
   });
 
-  final int? id;
+  final num? id;
   final String? name;
   final Coord? coord;
   final String? country;
-  final int? population;
-  final int? timezone;
-  final int? sunrise;
-  final int? sunset;
+  final num? population;
+  final num? timezone;
+  final num? sunrise;
+  final num? sunset;
 
   factory City.fromJson(Map<String, dynamic> json) {
     return City(
@@ -68,8 +68,8 @@ class Coord {
     required this.lon,
   });
 
-  final double? lat;
-  final double? lon;
+  final num? lat;
+  final num? lon;
 
   factory Coord.fromJson(Map<String, dynamic> json) {
     return Coord(
@@ -86,20 +86,20 @@ class ListElement {
     required this.weather,
     required this.clouds,
     required this.wind,
-    required this.visibility,
-    required this.pop,
+    //required this.visibility,
+    //required this.pop,
     required this.sys,
     required this.dtTxt,
     required this.rain,
   });
 
-  final int? dt;
+  final num? dt;
   final Main? main;
   final List<Weather> weather;
   final Clouds? clouds;
   final Wind? wind;
-  final int? visibility;
-  final double? pop;
+  //final int? visibility;
+  //final double? pop;
   final Sys? sys;
   final DateTime? dtTxt;
   final Rain? rain;
@@ -114,8 +114,8 @@ class ListElement {
               json["weather"]!.map((x) => Weather.fromJson(x))),
       clouds: json["clouds"] == null ? null : Clouds.fromJson(json["clouds"]),
       wind: json["wind"] == null ? null : Wind.fromJson(json["wind"]),
-      visibility: json["visibility"],
-      pop: json["pop"],
+      //visibility: json["visibility"],
+      //pop: json["pop"],
       sys: json["sys"] == null ? null : Sys.fromJson(json["sys"]),
       dtTxt: DateTime.tryParse(json["dt_txt"] ?? ""),
       rain: json["rain"] == null ? null : Rain.fromJson(json["rain"]),
@@ -141,36 +141,36 @@ class Main {
   Main({
     required this.temp,
     required this.feelsLike,
-    required this.tempMin,
-    required this.tempMax,
-    required this.pressure,
-    required this.seaLevel,
-    required this.grndLevel,
+    //required this.tempMin,
+    //required this.tempMax,
+    //required this.pressure,
+    //required this.seaLevel,
+    //required this.grndLevel,
     required this.humidity,
-    required this.tempKf,
+    //required this.tempKf,
   });
 
-  final double? temp;
-  final double? feelsLike;
-  final double? tempMin;
-  final double? tempMax;
-  final int? pressure;
-  final int? seaLevel;
-  final int? grndLevel;
-  final int? humidity;
-  final double? tempKf;
+  final num? temp;
+  final num? feelsLike;
+  //final double? tempMin;
+  //final double? tempMax;
+  //final int? pressure;
+  //final int? seaLevel;
+  //final int? grndLevel;
+  final num? humidity;
+  //final double? tempKf;
 
   factory Main.fromJson(Map<String, dynamic> json) {
     return Main(
       temp: json["temp"],
       feelsLike: json["feels_like"],
-      tempMin: json["temp_min"],
-      tempMax: json["temp_max"],
-      pressure: json["pressure"],
-      seaLevel: json["sea_level"],
-      grndLevel: json["grnd_level"],
+      //tempMin: json["temp_min"],
+      //tempMax: json["temp_max"],
+      //pressure: json["pressure"],
+      //seaLevel: json["sea_level"],
+      //grndLevel: json["grnd_level"],
       humidity: json["humidity"],
-      tempKf: json["temp_kf"],
+      //tempKf: json["temp_kf"],
     );
   }
 }
@@ -180,7 +180,7 @@ class Rain {
     required this.the3H,
   });
 
-  final double? the3H;
+  final num? the3H;
 
   factory Rain.fromJson(Map<String, dynamic> json) {
     return Rain(
@@ -205,20 +205,20 @@ class Sys {
 
 class Weather {
   Weather({
-    required this.id,
+    //required this.id,
     required this.main,
     required this.description,
     required this.icon,
   });
 
-  final int? id;
+  //final int? id;
   final String? main;
   final String? description;
   final String? icon;
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
-      id: json["id"],
+      //id: json["id"],
       main: json["main"],
       description: json["description"],
       icon: json["icon"],
@@ -229,18 +229,18 @@ class Weather {
 class Wind {
   Wind({
     required this.speed,
-    required this.deg,
+    //required this.deg,
     required this.gust,
   });
 
-  final double? speed;
-  final int? deg;
-  final double? gust;
+  final num? speed;
+  //final int? deg;
+  final num? gust;
 
   factory Wind.fromJson(Map<String, dynamic> json) {
     return Wind(
       speed: json["speed"],
-      deg: json["deg"],
+      //deg: json["deg"],
       gust: json["gust"],
     );
   }

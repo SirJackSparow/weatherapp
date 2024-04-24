@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weatherapps/const/applocator/service_locator.dart';
+import 'package:weatherapps/const/utils/weather_app_string.dart';
 import 'package:weatherapps/presentation/controllers/conectivity/internate_connectivity_bloc.dart';
+import 'package:weatherapps/presentation/controllers/forecast_controller/forecast_controller_bloc.dart';
 import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home_controller_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weatherapps/routes/weather_routes.dart';
@@ -15,7 +17,7 @@ var kColorDarkScheme = ColorScheme.fromSeed(
     seedColor: const Color.fromARGB(255, 5, 99, 125));
 
 final theme = ThemeData().copyWith(
-  scaffoldBackgroundColor: const Color.fromARGB(255, 240, 236, 236),
+  scaffoldBackgroundColor: Color.fromARGB(255, 22, 151, 221),
   colorScheme: kColorScheme,
   appBarTheme: const AppBarTheme().copyWith(
       backgroundColor: kColorScheme.onPrimaryContainer,
@@ -66,13 +68,16 @@ class App extends StatelessWidget {
                 create: (context) =>
                     WeatherHomeControllerBloc(appServiceLocator()),
               ),
+              BlocProvider(
+                  create: (context) =>
+                      ForecastControllerBloc(appServiceLocator())),
               BlocProvider(create: (context) => InternateConnectivityBloc())
             ],
             child: MaterialApp(
               theme: theme,
               debugShowCheckedModeBanner: false,
               darkTheme: darkTheme,
-              title: 'Weather App',
+              title: WeatherAppString.title,
               themeMode: ThemeMode.system,
               onGenerateRoute: RouteGenerator.getRoute,
               initialRoute: WeatherRoutes.homePageRoute,

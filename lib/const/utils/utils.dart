@@ -1,12 +1,13 @@
 import 'dart:io';
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'package:weatherapps/data/entity/forecast_entity.dart';
 import 'package:weatherapps/data/network/services.dart';
+import 'package:weatherapps/presentation/controllers/forecast_controller/forecast_controller_bloc.dart';
 import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home_controller_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -150,6 +151,7 @@ class HomeUtils {
           final weatherCityBloc =
               BlocProvider.of<WeatherHomeControllerBloc>(context);
           weatherCityBloc.add(GetCurrentCityWeatherInfo(place.locality!));
+          forecast(place.locality!, context);
         }
       }
     } finally {
@@ -157,9 +159,15 @@ class HomeUtils {
     }
   }
 
-  static searchCity(String cityName, BuildContext context) {
+  static searchCity(String cityName, BuildContext context) async {
     final weatherCityBloc = BlocProvider.of<WeatherHomeControllerBloc>(context);
     weatherCityBloc.add(GetCurrentCityWeatherInfo(cityName));
+    await forecast(cityName, context);
+  }
+
+  static forecast(String cityName, BuildContext context) {
+    final foreCastBloc = BlocProvider.of<ForecastControllerBloc>(context);
+    foreCastBloc.add(GetForecast(cityName));
   }
 
   static String formatDateTime(String timestamp) {
@@ -195,5 +203,31 @@ class HomeUtils {
     return WeatherAppServices.iconURL +
         weatherCode +
         WeatherAppServices.iconSize;
+  }
+
+  static List<String> getNextFiveDays() {
+    List<String> daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    DateTime currentDate = DateTime.now();
+
+    List<String> nextDays = [];
+    for (int i = 1; i <= 5; i++) {
+      DateTime nextDate = currentDate.add(Duration(days: i));
+      String day = daysOfWeek[nextDate.weekday % 7];
+      String dayWithNumber = '$day ${nextDate.day}';
+      nextDays.add(dayWithNumber);
+    }
+
+    return nextDays;
+  }
+
+  static String today() {
+    List<String> daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    DateTime currentDate = DateTime.now();
+    DateTime today = currentDate.add(Duration.zero);
+    String day = daysOfWeek[today.weekday % 7];
+    String dayWithNumber = '$day ${today.day}';
+
+    return dayWithNumber;
   }
 }

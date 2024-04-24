@@ -7,6 +7,10 @@ extension SizedBoxExtension on num {
   SizedBox get sizeHeight {
     return SizedBox(height: h);
   }
+
+  SizedBox get sizeWidth {
+    return SizedBox(width: h);
+  }
 }
 
 extension StringExtension on String {
