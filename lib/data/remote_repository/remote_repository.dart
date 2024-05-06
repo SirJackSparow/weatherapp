@@ -22,4 +22,28 @@ class WeatherRepository implements BaseRemoteRepository {
     final forecastResult = await baseRemoteDataSource.getForecast(cityName);
     return forecastResult;
   }
+
+  @override
+  Future<Either<String, WeatherModel>> saveWeatherLocalData(WeatherModel weatherModel) async {
+    final saveWeatherLocalDatabase = await baseRemoteDataSource.saveWeatherLocalData(weatherModel);
+    return saveWeatherLocalDatabase;
+  }
+
+  @override
+  Future<Either<String, WeatherModel>> getWeatherLocalData() async{
+    final getLocalData = await baseRemoteDataSource.getWeatherFromLocal();
+    return getLocalData;
+  }
+
+  @override
+  Future<Either<String, ForeCastModel>> getForeCastData() async{
+    final getLocalData = await baseRemoteDataSource.getForecastLocalData();
+    return getLocalData;
+  }
+
+  @override
+  Future<Either<String, ForeCastModel>> saveForeCastData(ForeCastModel foreCastModel) async{
+    final foreCastData = await baseRemoteDataSource.saveForeCast(foreCastModel);
+    return foreCastData;
+  }
 }

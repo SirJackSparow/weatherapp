@@ -11,4 +11,10 @@ class WeatherAppUseCases {
       String cityName) async {
     return await baseWeatherRepository.getWeatherForCurrentCity(cityName);
   }
+
+  Future<Either<String, WeatherModel>> saveLocalDatabase(WeatherModel weatherModel) async {
+   return await baseWeatherRepository.saveWeatherLocalData(weatherModel);
+  }
+
+
 }

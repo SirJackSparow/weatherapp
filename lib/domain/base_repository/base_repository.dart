@@ -6,4 +6,12 @@ abstract class BaseRemoteRepository {
   Future<Either<String, WeatherModel>> getWeatherForCurrentCity(
       String cityName);
   Future<Either<String, ForeCastModel>> getForecast(String cityName);
+
+  Future<Either<String, WeatherModel>> saveWeatherLocalData(WeatherModel weatherModel);
+
+  Future<Either<String, WeatherModel>> getWeatherLocalData();
+
+  Future<Either<String, ForeCastModel>> saveForeCastData(ForeCastModel foreCastModel);
+
+  Future<Either<String, ForeCastModel>> getForeCastData();
 }

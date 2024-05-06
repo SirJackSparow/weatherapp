@@ -10,4 +10,8 @@ class ForecastUseCase {
   Future<Either<String, ForeCastModel>> getForecast(String cityName) async {
     return await baseRemoteRepository.getForecast(cityName);
   }
+
+  Future<Either<String, ForeCastModel>> saveLocalForecast(ForeCastModel foreCastModel) async{
+    return await baseRemoteRepository.saveForeCastData(foreCastModel);
+  }
 }

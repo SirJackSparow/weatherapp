@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'package:weatherapps/const/app_color.dart';
 import 'package:weatherapps/const/app_extentions.dart';
@@ -26,7 +27,19 @@ class WeatherUIWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
+    return Stack(
+        children: [
+     HomeUtils.isDarkMode(context) ?
+     SizedBox(
+       width: double.infinity,
+       height: double.infinity,
+       child: Lottie.asset('assets/json/dark_mode.json', fit: BoxFit.cover),
+     ) :
+      SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Lottie.asset('assets/json/morning_mode.json', fit: BoxFit.cover),
+      ),
       Positioned(
           top: 0,
           left: 0,
@@ -272,6 +285,7 @@ class WeatherUIWidget extends StatelessWidget {
             BlocBuilder<ForecastControllerBloc, ForecastControllerState>(
                 builder: (context, states) {
               if (states is ForecastLoaded) {
+                HomeUtils.saveForeCast(states.foreCastModel, context);
                 List<ListElement> data = [];
                 data.add(states.foreCastModel.list[0]);
                 data.add(states.foreCastModel.list[1]);
@@ -297,7 +311,9 @@ class WeatherUIWidget extends StatelessWidget {
                                       left: 7.w, right: 7.w, top: 20.h),
                                   child: NextWeekCard(
                                       daysOfWeek: dayNext[index],
-                                      forecastModel: data[index]),
+                                      forecastModel: data[index],
+                                      offline: false,
+                                  ),
                                 );
                               }),
                             ),

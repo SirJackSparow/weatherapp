@@ -9,4 +9,5 @@ class WeatherAppString {
   static String kmh = "km/h";
   static String feelsLike = "Feels Like";
   static String search = 'Search';
+  static String dataInsertFailed = 'Data Insert Failed';
 }

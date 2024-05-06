@@ -6,8 +6,13 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'package:weatherapps/data/entity/forecast_entity.dart';
+import 'package:weatherapps/data/entity/weather_entity.dart';
 import 'package:weatherapps/data/network/services.dart';
 import 'package:weatherapps/presentation/controllers/forecast_controller/forecast_controller_bloc.dart';
+import 'package:weatherapps/presentation/controllers/forecast_get_local_controller/get_forecast_local_bloc.dart';
+import 'package:weatherapps/presentation/controllers/forecast_local_controller/save_forecast_local_data_bloc.dart';
+import 'package:weatherapps/presentation/controllers/get_local_controller/get_local_data_bloc.dart';
+import 'package:weatherapps/presentation/controllers/localdatabase_controller/save_data_local_bloc.dart';
 import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home_controller_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -176,6 +181,16 @@ class HomeUtils {
     return formattedDateTime;
   }
 
+  static getLocalData(BuildContext context) async{
+    final getLocalDataBloc = BlocProvider.of<GetLocalDataBloc>(context);
+    getLocalDataBloc.add(const GetLocalDataWeatherEvent());
+  }
+
+  static getForeCastData(BuildContext context) {
+    final getForeCastLocalData = BlocProvider.of<GetForeCastBloc>(context);
+    getForeCastLocalData.add(const GetForeCastLocalDataEvent());
+  }
+
   static getWeatherIcon(String weatherCode) {
     switch (weatherCode) {
       case "01d":
@@ -227,7 +242,21 @@ class HomeUtils {
     DateTime today = currentDate.add(Duration.zero);
     String day = daysOfWeek[today.weekday % 7];
     String dayWithNumber = '$day ${today.day}';
-
     return dayWithNumber;
+  }
+
+  static void saveCity(WeatherModel weatherModel, BuildContext context) {
+    final userBloc = BlocProvider.of<SaveDataLocalBloc>(context);
+    userBloc.add(SaveLocalData(weatherModel));
+  }
+
+  static void saveForeCast(ForeCastModel foreCastModel, BuildContext context) {
+    final userBloc = BlocProvider.of<SaveForeCastBloc>(context);
+    userBloc.add(SaveForeCastData(foreCastModel));
+  }
+
+  static bool isDarkMode(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    return brightness == Brightness.dark;
   }
 }

@@ -25,6 +25,14 @@ class ForeCastModel {
       city: json["city"] == null ? null : City.fromJson(json["city"]),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    "cod": cod,
+    "message": message,
+    "cnt": cnt,
+    "list": List<dynamic>.from(list.map((x) => x.toJson())),
+    "city": city?.toJson()
+  };
 }
 
 class City {
@@ -60,6 +68,17 @@ class City {
       sunset: json["sunset"],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "coord": coord?.toJson(),
+    "country": country,
+    "population": population,
+    "timezone": timezone,
+    "sunrise": sunrise,
+    "sunset" : sunset
+  };
 }
 
 class Coord {
@@ -77,6 +96,11 @@ class Coord {
       lon: json["lon"],
     );
   }
+
+  Map<String, dynamic> toJson()=> {
+    "lat": lat,
+    "lon": lon
+  };
 }
 
 class ListElement {
@@ -121,6 +145,17 @@ class ListElement {
       rain: json["rain"] == null ? null : Rain.fromJson(json["rain"]),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+   "dt": dt,
+    "main": main?.toJson(),
+    "weather": List<dynamic>.from(weather.map((x) => x.toJson())),
+    "clouds": clouds?.toJson(),
+    "wind": wind?.toJson(),
+    "sys": sys?.toJson(),
+    "dt_txt": dtTxt?.toIso8601String(),
+    "rain": rain?.toJson()
+  };
 }
 
 class Clouds {
@@ -135,6 +170,10 @@ class Clouds {
       all: json["all"],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    "all": all
+  };
 }
 
 class Main {
@@ -173,6 +212,12 @@ class Main {
       //tempKf: json["temp_kf"],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    "temp": temp,
+    "feels_like": feelsLike,
+    "humidity": humidity
+  };
 }
 
 class Rain {
@@ -187,6 +232,10 @@ class Rain {
       the3H: json["3h"],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    "3h": the3H
+  };
 }
 
 class Sys {
@@ -201,6 +250,9 @@ class Sys {
       pod: json["pod"],
     );
   }
+  Map<String, dynamic> toJson() => {
+    "pod":pod
+  };
 }
 
 class Weather {
@@ -224,6 +276,12 @@ class Weather {
       icon: json["icon"],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    "main": main,
+    "description":description,
+    "icon": icon
+  };
 }
 
 class Wind {
@@ -244,4 +302,9 @@ class Wind {
       gust: json["gust"],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    "speed":speed,
+    "gust": gust
+  };
 }

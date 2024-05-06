@@ -1,7 +1,8 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import 'package:weather_icons/weather_icons.dart';
 import 'package:weatherapps/const/app_color.dart';
 import 'package:weatherapps/const/app_extentions.dart';
 import 'package:weatherapps/const/appresources.dart';
@@ -15,9 +16,10 @@ import '../../../../const/utils/weather_app_fonts.dart';
 class NextWeekCard extends StatelessWidget {
   final String daysOfWeek;
   final ListElement forecastModel;
+  final bool offline;
 
   const NextWeekCard(
-      {Key? key, required this.daysOfWeek, required this.forecastModel})
+      {Key? key, required this.daysOfWeek, required this.forecastModel, required this.offline})
       : super(key: key);
 
   @override
@@ -43,10 +45,11 @@ class NextWeekCard extends StatelessWidget {
         SizedBox(
           height: 5.h,
         ),
-        Image.network(
-          HomeUtils.getWeatherIconURL(forecastModel.weather[0].icon!),
-          color: WeatherAppColor.yellowColor,
-        ),
+
+        offline ? const Icon(Icons.cloud_off,size: 60.0,color: Colors.yellow) : Image.network(
+            HomeUtils.getWeatherIconURL(forecastModel.weather[0].icon!),
+            color: WeatherAppColor.yellowColor,
+          ),
 
         /// temp
         Text(

@@ -7,4 +7,12 @@ abstract class BaseRemoteDataSource {
       String cityName);
 
   Future<Either<String, ForeCastModel>> getForecast(String cityName);
+
+  Future<Either<String, WeatherModel>> saveWeatherLocalData(WeatherModel weatherModel);
+
+  Future<Either<String,WeatherModel>> getWeatherFromLocal();
+
+  Future<Either<String,ForeCastModel>> saveForeCast(ForeCastModel foreCastModel);
+
+  Future<Either<String, ForeCastModel>> getForecastLocalData();
 }

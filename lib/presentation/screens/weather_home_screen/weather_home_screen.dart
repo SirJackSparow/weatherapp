@@ -7,7 +7,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:weatherapps/const/utils/utils.dart';
 import 'package:weatherapps/data/entity/weather_entity.dart';
 import 'package:weatherapps/presentation/controllers/conectivity/internate_connectivity_bloc.dart';
+import 'package:weatherapps/presentation/controllers/get_local_controller/get_local_data_bloc.dart';
 import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home_controller_bloc.dart';
+import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/weather_offline_widget.dart';
 import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/weather_widget.dart';
 
 class WeatherHomeScreen extends StatefulWidget {
@@ -56,6 +58,7 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
               if (state is CurrentCityDataLoaded) {
                 WeatherModel weatherCityModel = state.currentCityData;
                 weatherCityModel.isCurrentCity = true;
+                HomeUtils.saveCity(weatherCityModel, context);
                 return WeatherUIWidget(
                   weatherModel: weatherCityModel,
                 );
@@ -69,7 +72,18 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
             },
           );
         } else if (state is NotConnectedState) {
-          log("Not connected");
+          HomeUtils.getLocalData(context);
+          HomeUtils.getForeCastData(context);
+          return BlocBuilder<GetLocalDataBloc, GetLocalDataState>(
+            builder: (context, states) {
+              if(states is GetLocalDataLoaded) {
+                return WeatherOfflineWidget(weatherModel: states.weatherModel);
+              } else if (states is GetLocalDataWeatherError) {
+                log(states.errorMessage);
+              }
+              return Container();
+            },
+          );
         }
         return Container();
       },
