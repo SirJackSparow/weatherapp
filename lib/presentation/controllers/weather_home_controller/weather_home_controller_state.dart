@@ -20,7 +20,6 @@ class CurrentCityWeatherInfoLoadingError extends WeatherHomeControllerState {
   final String errorMessage;
   const CurrentCityWeatherInfoLoadingError(this.errorMessage);
   @override
-  // TODO: implement props
   List<Object?> get props => [errorMessage];
 }
 
@@ -29,6 +28,5 @@ class CurrentCityDataLoaded extends WeatherHomeControllerState {
   final WeatherModel currentCityData;
   const CurrentCityDataLoaded(this.currentCityData);
   @override
-  // TODO: implement props
   List<Object?> get props => [currentCityData];
 }

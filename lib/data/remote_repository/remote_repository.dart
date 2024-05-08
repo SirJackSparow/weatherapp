@@ -46,4 +46,16 @@ class WeatherRepository implements BaseRemoteRepository {
     final foreCastData = await baseRemoteDataSource.saveForeCast(foreCastModel);
     return foreCastData;
   }
+
+  @override
+  Future<Either<String, List<WeatherModel>>> getFavorite() async{
+    final getFavorite = await baseRemoteDataSource.getFavorite();
+    return getFavorite;
+  }
+
+  @override
+  Future<Either<String, WeatherModel>> saveFavorite(WeatherModel weatherModel) async{
+    final saveFavorite = await baseRemoteDataSource.saveFavorite(weatherModel);
+    return saveFavorite;
+  }
 }

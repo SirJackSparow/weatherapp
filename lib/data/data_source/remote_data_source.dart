@@ -18,8 +18,10 @@ class RemoteDataSource extends BaseRemoteDataSource {
   Dio dio = Dio();
   static const String CityName = 'cities';
   static const String Forecast = 'forecast';
+  static const String Favorite = 'favorite';
   final cityNameStore = intMapStoreFactory.store(CityName);
   final foreCastStore = intMapStoreFactory.store(Forecast);
+  final favoriteStore = intMapStoreFactory.store(Favorite);
 
   RemoteDataSource() : _appDatabase = GetIt.instance<AppDatabase>();
 
@@ -107,9 +109,8 @@ class RemoteDataSource extends BaseRemoteDataSource {
       await cityNameStore.add(await _db, weatherModel.toJson());
       return Right(weatherModel);
     } catch (e) {
-      Left('${WeatherAppString.dataInsertFailed} ${e.toString()}');
+      return Left('${WeatherAppString.dataInsertFailed} ${e.toString()}');
     }
-    throw UnimplementedError();
   }
 
   String normalizeCityName(String name) {
@@ -153,6 +154,54 @@ class RemoteDataSource extends BaseRemoteDataSource {
       await foreCastStore.delete(await _db);
       await foreCastStore.add(await _db, foreCastModel.toJson());
       return Right(foreCastModel);
+    } catch(e) {
+      return Left(e.toString());
+    }
+  }
+
+
+
+  @override
+  Future<Either<String, WeatherModel>> saveFavorite(WeatherModel weatherModel) async{
+    try {
+      final cityNameNormalized = normalizeCityName(weatherModel.name);
+      final existingRecord = await favoriteStore.find(
+        await _db,
+        finder: Finder(
+          filter: Filter.custom((record)  {
+            final recordNameNormalized = normalizeCityName(record['name'] as String);
+            return recordNameNormalized == cityNameNormalized;
+          })
+        )
+      );
+
+      if(existingRecord.isNotEmpty){
+        final existingWeatherModel = WeatherModel.fromJson(existingRecord.first.value);
+        return Right(existingWeatherModel);
+      }
+      await cityNameStore.add(await _db, weatherModel.toJson());
+      return Right(weatherModel);
+
+    } catch(e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, WeatherModel>> deleteFavorite() {
+    // TODO: implement deleteFavorite
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<String, List<WeatherModel>>> getFavorite() async{
+    try{
+      final favoriteData = await favoriteStore.find(await _db);
+      final favoritesModel = favoriteData.map((snapshot) {
+        return WeatherModel.fromJson(snapshot.value);
+      }).toList();
+
+      return Right(favoritesModel);
     } catch(e) {
       return Left(e.toString());
     }

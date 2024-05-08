@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weatherapps/const/applocator/service_locator.dart';
 import 'package:weatherapps/const/utils/weather_app_string.dart';
 import 'package:weatherapps/presentation/controllers/conectivity/internate_connectivity_bloc.dart';
+import 'package:weatherapps/presentation/controllers/favorite_controller/favorite_controller_bloc.dart';
 import 'package:weatherapps/presentation/controllers/forecast_controller/forecast_controller_bloc.dart';
 import 'package:weatherapps/presentation/controllers/forecast_get_local_controller/get_forecast_local_bloc.dart';
 import 'package:weatherapps/presentation/controllers/forecast_local_controller/save_forecast_local_data_bloc.dart';
@@ -83,7 +84,9 @@ class App extends StatelessWidget {
 
               BlocProvider(create: (context) => GetForeCastBloc(appServiceLocator())),
 
-              BlocProvider(create: (context) => SaveForeCastBloc(appServiceLocator()))
+              BlocProvider(create: (context) => SaveForeCastBloc(appServiceLocator())),
+
+              BlocProvider(create: (context) => FavoriteBloc(appServiceLocator()))
             ],
             child: MaterialApp(
               theme: theme,

@@ -11,7 +11,5 @@ class SaveLocalData extends SaveLocalDataEvent {
   const SaveLocalData(this.weatherModel);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [weatherModel];
-
 }

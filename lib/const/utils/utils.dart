@@ -8,6 +8,7 @@ import 'package:weather_icons/weather_icons.dart';
 import 'package:weatherapps/data/entity/forecast_entity.dart';
 import 'package:weatherapps/data/entity/weather_entity.dart';
 import 'package:weatherapps/data/network/services.dart';
+import 'package:weatherapps/presentation/controllers/favorite_controller/favorite_controller_bloc.dart';
 import 'package:weatherapps/presentation/controllers/forecast_controller/forecast_controller_bloc.dart';
 import 'package:weatherapps/presentation/controllers/forecast_get_local_controller/get_forecast_local_bloc.dart';
 import 'package:weatherapps/presentation/controllers/forecast_local_controller/save_forecast_local_data_bloc.dart';
@@ -253,6 +254,16 @@ class HomeUtils {
   static void saveForeCast(ForeCastModel foreCastModel, BuildContext context) {
     final userBloc = BlocProvider.of<SaveForeCastBloc>(context);
     userBloc.add(SaveForeCastData(foreCastModel));
+  }
+
+  static void saveFavorite(WeatherModel weatherModel, BuildContext context) {
+    final favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
+    favoriteBloc.add(FavoriteSaveEvent(weatherModel));
+  }
+
+  static void getFavorite(BuildContext context) {
+    final favoriteBloc =  BlocProvider.of<FavoriteBloc>(context);
+    favoriteBloc.add(const GetFavoriteEvent());
   }
 
   static bool isDarkMode(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
+import 'package:lottie/lottie.dart';
 import 'package:weatherapps/const/app_extentions.dart';
 import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/reusable_container.dart';
 
@@ -28,6 +29,17 @@ class WeatherOfflineWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        HomeUtils.isDarkMode(context) ?
+        SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Lottie.asset('assets/json/dark_mode.json', fit: BoxFit.cover),
+        ) :
+        SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Lottie.asset('assets/json/morning_mode.json', fit: BoxFit.cover),
+        ),
         Positioned(
             top: 0,
             left: 0,

@@ -10,4 +10,6 @@ class WeatherAppString {
   static String feelsLike = "Feels Like";
   static String search = 'Search';
   static String dataInsertFailed = 'Data Insert Failed';
+  static String addFavorite = 'Add Favorite';
+  static String listFavorite = 'List Favorite';
 }

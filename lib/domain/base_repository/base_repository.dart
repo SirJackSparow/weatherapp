@@ -14,4 +14,8 @@ abstract class BaseRemoteRepository {
   Future<Either<String, ForeCastModel>> saveForeCastData(ForeCastModel foreCastModel);
 
   Future<Either<String, ForeCastModel>> getForeCastData();
+
+  Future<Either<String, List<WeatherModel>>> getFavorite();
+
+  Future<Either<String, WeatherModel>> saveFavorite(WeatherModel weatherModel);
 }

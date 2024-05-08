@@ -7,7 +7,6 @@ abstract class SaveLocalDataState extends Equatable {
 
 class SaveLocalDataInitial extends SaveLocalDataState {
   @override
-  // TODO: implement props
   List<Object?> get props => [];
 
 }
@@ -17,7 +16,6 @@ class DataSaved extends SaveLocalDataState{
   const DataSaved(this.weatherModel);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [weatherModel];
 }
 
@@ -26,7 +24,6 @@ class DataError extends SaveLocalDataState{
   final String errorMessage;
   const DataError(this.errorMessage);
   @override
-  // TODO: implement props
   List<Object?> get props => [errorMessage];
 
 }

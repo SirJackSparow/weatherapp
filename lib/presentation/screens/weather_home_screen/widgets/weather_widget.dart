@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +22,7 @@ import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:weatherapps/presentation/controllers/forecast_controller/forecast_controller_bloc.dart';
 import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/reusable_container.dart';
 import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/search_widget_bottomsheet.dart';
+import 'package:weatherapps/routes/weather_routes.dart';
 
 class WeatherUIWidget extends StatelessWidget {
   final WeatherModel weatherModel;
@@ -44,17 +48,49 @@ class WeatherUIWidget extends StatelessWidget {
           top: 0,
           left: 0,
           right: 0,
-          child: WeatherAppBar(
-              cityNames: weatherModel.name,
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return const SearchBottomSheet();
-                    });
-              })),
+          child: Column(
+            children: [
+              WeatherAppBar(
+                  cityNames: weatherModel.name,
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return const SearchBottomSheet();
+                        });
+                  }),
+
+              Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          HomeUtils.saveFavorite(weatherModel, context);
+                        },
+                        child: Text(WeatherAppString.addFavorite,
+                          style: WeatherAppFonts.small(
+                            fontWeight: FontWeight.w400,
+                            color: WeatherAppColor.whiteColor)
+                            .copyWith(fontSize: WeatherAppFontSize.s15),)
+                    ) ,
+                    Expanded(child: Container()),
+                    ElevatedButton(
+                        onPressed: () => Navigator.pushNamed(context,WeatherRoutes.favoriteRoute),
+                        child: Text(WeatherAppString.listFavorite,
+                          style: WeatherAppFonts.small(
+                            fontWeight: FontWeight.w400,
+                            color: WeatherAppColor.whiteColor)
+                            .copyWith(fontSize: WeatherAppFontSize.s15),)
+                    ) ,
+                  ],
+                ),
+              ),
+            ],
+          )),
+
       Padding(
-        padding: EdgeInsets.only(top: 70.h),
+        padding: EdgeInsets.only(top: 79.h),
         child: ListView(
           children: [
             //today

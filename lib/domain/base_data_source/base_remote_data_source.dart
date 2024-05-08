@@ -15,4 +15,10 @@ abstract class BaseRemoteDataSource {
   Future<Either<String,ForeCastModel>> saveForeCast(ForeCastModel foreCastModel);
 
   Future<Either<String, ForeCastModel>> getForecastLocalData();
+
+  Future<Either<String,WeatherModel>> saveFavorite(WeatherModel weatherModel);
+
+  Future<Either<String, List<WeatherModel>>> getFavorite();
+
+  Future<Either<String,WeatherModel>> deleteFavorite();
 }

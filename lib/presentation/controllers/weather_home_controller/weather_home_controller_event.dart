@@ -15,6 +15,5 @@ class GetCurrentCityWeatherInfo extends WeatherControllerEvent {
   const GetCurrentCityWeatherInfo(this.currentCityName);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [currentCityName];
 }
