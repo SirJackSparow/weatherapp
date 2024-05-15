@@ -9,8 +9,9 @@ import 'package:weatherapps/data/entity/weather_entity.dart';
 import 'package:weatherapps/presentation/controllers/conectivity/internate_connectivity_bloc.dart';
 import 'package:weatherapps/presentation/controllers/get_local_controller/get_local_data_bloc.dart';
 import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home_controller_bloc.dart';
+import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/drawer.dart';
 import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/weather_offline_widget.dart';
-import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/weather_widget.dart';
+import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/weather_online_widget.dart';
 
 class WeatherHomeScreen extends StatefulWidget {
   const WeatherHomeScreen({super.key});
@@ -39,8 +40,9 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body:
-        BlocBuilder<InternateConnectivityBloc, InternateConnectivityState>(
+    return Scaffold(
+        drawer: drawerWeather(),
+        body: BlocBuilder<InternateConnectivityBloc, InternateConnectivityState>(
       builder: (context, state) {
         if (state is ConnectedState) {
           return BlocConsumer<WeatherHomeControllerBloc,

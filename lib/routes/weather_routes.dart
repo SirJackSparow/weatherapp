@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weatherapps/presentation/screens/weather_home_screen/favorite_screen.dart';
+import 'package:weatherapps/presentation/screens/favorite_screen/favorite_screen.dart';
 import 'package:weatherapps/presentation/screens/weather_home_screen/weather_home_screen.dart';
 
 class WeatherRoutes {

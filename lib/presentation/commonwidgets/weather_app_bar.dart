@@ -17,7 +17,16 @@ class WeatherAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: WeatherAppColor.transParentColor,
-      leading: Icon(Icons.location_on, color: WeatherAppColor.whiteColor),
+      leading: Builder(
+        builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu, color: WeatherAppColor.whiteColor),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        },
+      ),
       title: Text(
         cityNames,
         style: WeatherAppFonts.medium(
