@@ -60,32 +60,32 @@ class WeatherUIWidget extends StatelessWidget {
                         });
                   }),
 
-              Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Row(
-                  children: [
-                    ElevatedButton(
-                        onPressed: () {
-                          HomeUtils.saveFavorite(weatherModel, context);
-                        },
-                        child: Text(WeatherAppString.addFavorite,
-                          style: WeatherAppFonts.small(
-                            fontWeight: FontWeight.w400,
-                            color: WeatherAppColor.whiteColor)
-                            .copyWith(fontSize: WeatherAppFontSize.s15),)
-                    ) ,
-                    Expanded(child: Container()),
-                    ElevatedButton(
-                        onPressed: () => Navigator.pushNamed(context,WeatherRoutes.favoriteRoute),
-                        child: Text(WeatherAppString.listFavorite,
-                          style: WeatherAppFonts.small(
-                            fontWeight: FontWeight.w400,
-                            color: WeatherAppColor.whiteColor)
-                            .copyWith(fontSize: WeatherAppFontSize.s15),)
-                    ) ,
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(2.0),
+              //   child: Row(
+              //     children: [
+              //       ElevatedButton(
+              //           onPressed: () {
+              //             HomeUtils.saveFavorite(weatherModel, context);
+              //           },
+              //           child: Text(WeatherAppString.addFavorite,
+              //             style: WeatherAppFonts.small(
+              //               fontWeight: FontWeight.w400,
+              //               color: WeatherAppColor.whiteColor)
+              //               .copyWith(fontSize: WeatherAppFontSize.s15),)
+              //       ) ,
+              //       Expanded(child: Container()),
+              //       ElevatedButton(
+              //           onPressed: () => Navigator.pushNamed(context,WeatherRoutes.favoriteRoute),
+              //           child: Text(WeatherAppString.listFavorite,
+              //             style: WeatherAppFonts.small(
+              //               fontWeight: FontWeight.w400,
+              //               color: WeatherAppColor.whiteColor)
+              //               .copyWith(fontSize: WeatherAppFontSize.s15),)
+              //       ) ,
+              //     ],
+              //   ),
+              // ),
             ],
           )),
 

@@ -12,4 +12,5 @@ class WeatherAppString {
   static String dataInsertFailed = 'Data Insert Failed';
   static String addFavorite = 'Add Favorite';
   static String listFavorite = 'List Favorite';
+  static String drawerHeader = 'Menu';
 }
