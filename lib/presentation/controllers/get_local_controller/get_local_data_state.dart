@@ -23,6 +23,5 @@ class GetLocalDataWeatherError extends GetLocalDataState {
   const GetLocalDataWeatherError(this.errorMessage);
 
   @override
-  // TODO: implement props
   List<Object?> get props => [errorMessage];
 }

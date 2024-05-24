@@ -52,6 +52,7 @@ dependencies:
   weather_icons: ^3.0.0
   flutter_svg_provider: ^1.0.7
   sembast: ^3.7.1
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

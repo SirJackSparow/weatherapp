@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -7,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:sembast/sembast.dart';
 import 'package:weatherapps/const/utils/weather_app_string.dart';
 import 'package:weatherapps/data/entity/forecast_entity.dart';
+import 'package:weatherapps/data/shared_pref/sharedprefs_service.dart';
 import 'package:weatherapps/domain/base_data_source/base_remote_data_source.dart';
 import 'package:weatherapps/data/entity/weather_entity.dart';
 import 'package:weatherapps/data/network/services.dart';
@@ -89,21 +89,20 @@ class RemoteDataSource extends BaseRemoteDataSource {
   }
 
   @override
-  Future<Either<String, WeatherModel>> saveWeatherLocalData(WeatherModel weatherModel) async {
-    try{
+  Future<Either<String, WeatherModel>> saveWeatherLocalData(
+      WeatherModel weatherModel) async {
+    try {
       final cityNameNormalized = normalizeCityName(weatherModel.name);
-      final existingRecord = await cityNameStore.find(
-        await _db,
-        finder: Finder(
-          filter: Filter.custom((record) {
-            final recordNameNormalized = normalizeCityName(record['name'] as String);
-            return recordNameNormalized == cityNameNormalized;
-          })
-        )
-      );
+      final existingRecord = await cityNameStore.find(await _db,
+          finder: Finder(filter: Filter.custom((record) {
+        final recordNameNormalized =
+            normalizeCityName(record['name'] as String);
+        return recordNameNormalized == cityNameNormalized;
+      })));
 
-      if(existingRecord.isNotEmpty){
-        final existingWeatherModel = WeatherModel.fromJson(existingRecord.first.value);
+      if (existingRecord.isNotEmpty) {
+        final existingWeatherModel =
+            WeatherModel.fromJson(existingRecord.first.value);
         return Right(existingWeatherModel);
       }
       await cityNameStore.add(await _db, weatherModel.toJson());
@@ -119,90 +118,128 @@ class RemoteDataSource extends BaseRemoteDataSource {
 
   @override
   Future<Either<String, WeatherModel>> getWeatherFromLocal() async {
-    try{
+    try {
       final recordsSnapshots = await cityNameStore.find(await _db);
-      if(recordsSnapshots.isEmpty) {
+      if (recordsSnapshots.isEmpty) {
         return const Left('No Data');
       }
       final recordSnapshot = recordsSnapshots.first;
       final weatherModel = WeatherModel.fromJson(recordSnapshot.value);
       return Right(weatherModel);
-    } catch(e){
+    } catch (e) {
       log(e.toString());
       return Left('Local database error ${e.toString()}');
     }
   }
 
   @override
-  Future<Either<String, ForeCastModel>> getForecastLocalData() async{
-    try{
+  Future<Either<String, ForeCastModel>> getForecastLocalData() async {
+    try {
       final foreCast = await foreCastStore.find(await _db);
-      if(foreCast.isEmpty){
+      if (foreCast.isEmpty) {
         return const Left('No Data');
       }
       final getForeCast = foreCast.first;
       final foreCastModel = ForeCastModel.fromJson(getForeCast.value);
       return Right(foreCastModel);
-    } catch(e) {
+    } catch (e) {
       return Left('Local db ${e.toString()}');
     }
   }
 
   @override
-  Future<Either<String, ForeCastModel>> saveForeCast(ForeCastModel foreCastModel) async{
-    try{
+  Future<Either<String, ForeCastModel>> saveForeCast(
+      ForeCastModel foreCastModel) async {
+    try {
       await foreCastStore.delete(await _db);
       await foreCastStore.add(await _db, foreCastModel.toJson());
       return Right(foreCastModel);
-    } catch(e) {
+    } catch (e) {
       return Left(e.toString());
     }
   }
 
-
-
   @override
-  Future<Either<String, WeatherModel>> saveFavorite(WeatherModel weatherModel) async{
+  Future<Either<String, WeatherModel>> saveFavorite(
+      WeatherModel weatherModel) async {
     try {
       final cityNameNormalized = normalizeCityName(weatherModel.name);
-      final existingRecord = await favoriteStore.find(
-        await _db,
-        finder: Finder(
-          filter: Filter.custom((record)  {
-            final recordNameNormalized = normalizeCityName(record['name'] as String);
-            return recordNameNormalized == cityNameNormalized;
-          })
-        )
-      );
+      final existingRecord = await favoriteStore.find(await _db,
+          finder: Finder(filter: Filter.custom((record) {
+        final recordNameNormalized =
+            normalizeCityName(record['name'] as String);
+        return recordNameNormalized == cityNameNormalized;
+      })));
 
-      if(existingRecord.isNotEmpty){
-        final existingWeatherModel = WeatherModel.fromJson(existingRecord.first.value);
+      if (existingRecord.isNotEmpty) {
+        final existingWeatherModel =
+            WeatherModel.fromJson(existingRecord.first.value);
         return Right(existingWeatherModel);
       }
       await cityNameStore.add(await _db, weatherModel.toJson());
       return Right(weatherModel);
-
-    } catch(e) {
+    } catch (e) {
       return Left(e.toString());
     }
   }
 
   @override
   Future<Either<String, WeatherModel>> deleteFavorite() {
-    // TODO: implement deleteFavorite
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<String, List<WeatherModel>>> getFavorite() async{
-    try{
+  Future<Either<String, List<WeatherModel>>> getFavorite() async {
+    try {
       final favoriteData = await favoriteStore.find(await _db);
       final favoritesModel = favoriteData.map((snapshot) {
         return WeatherModel.fromJson(snapshot.value);
       }).toList();
 
       return Right(favoritesModel);
-    } catch(e) {
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, bool>> getFarenheit() async {
+    try {
+      final farenheit =
+          await SharedprefsService.getData(WeatherAppString.isFarenheit);
+      return Right(farenheit);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, bool>> getTheme() async {
+    try {
+      final theme =
+          await SharedprefsService.getData(WeatherAppString.isDarkTheme);
+      return Right(theme);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, bool>> setFarenheit(bool farenheit) async {
+    try {
+      await SharedprefsService.isFarenHeit(farenheit);
+      return Right(farenheit);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, bool>> setTheme(bool theme) async {
+    try {
+      await SharedprefsService.isDarkTheme(theme);
+      return Right(theme);
+    } catch (e) {
       return Left(e.toString());
     }
   }

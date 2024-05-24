@@ -7,7 +7,6 @@ class WeatherAppServices {
 
   static const String forecast = 'forecast';
 
-  /// icon data URL
   static const String iconURL = "https://openweathermap.org/img/wn/";
   static const String iconSize = "@2x.png";
 

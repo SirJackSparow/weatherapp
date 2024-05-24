@@ -42,6 +42,10 @@ class HomeUtils {
     );
   }
 
+  static int farenHeit(double cel) {
+    return  ((9 / 5) * cel).ceil() + 32;
+  }
+
   static Future<void> getPosition(
       BuildContext context,
       bool mounted,
@@ -244,11 +248,6 @@ class HomeUtils {
     String day = daysOfWeek[today.weekday % 7];
     String dayWithNumber = '$day ${today.day}';
     return dayWithNumber;
-  }
-
-  static void saveCity(WeatherModel weatherModel, BuildContext context) {
-    final userBloc = BlocProvider.of<SaveDataLocalBloc>(context);
-    userBloc.add(SaveLocalData(weatherModel));
   }
 
   static void saveForeCast(ForeCastModel foreCastModel, BuildContext context) {
