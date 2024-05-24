@@ -13,4 +13,9 @@ class WeatherAppString {
   static String addFavorite = 'Add Favorite';
   static String listFavorite = 'List Favorite';
   static String drawerHeader = 'Menu';
+  static String darkTheme = 'Dark Theme';
+  static String farenheitName = 'FarenHeit';
+  static String isDarkTheme = 'isDarkTheme';
+  static String isFarenheit = 'isFarenheit';
+
 }

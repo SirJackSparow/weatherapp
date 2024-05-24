@@ -21,4 +21,12 @@ abstract class BaseRemoteDataSource {
   Future<Either<String, List<WeatherModel>>> getFavorite();
 
   Future<Either<String,WeatherModel>> deleteFavorite();
+
+  Future<Either<String, bool>> getTheme();
+
+  Future<Either<String, bool>> setTheme(bool theme);
+
+  Future<Either<String, bool>> getFarenheit();
+
+  Future<Either<String, bool>> setFarenheit(bool farenheit);
 }

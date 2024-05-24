@@ -18,7 +18,7 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(WeatherAppPaddings.s16),
-      height: 400,
+      height: double.infinity,
       child: Column(
         children: [
           TextField(
