@@ -168,26 +168,26 @@ class WeatherHome {
     }
   }
 
-  // static searchCity(String cityName, BuildContext context) async {
-  //   final weatherCityBloc = BlocProvider.of<WeatherHomeControllerBloc>(context);
-  //   weatherCityBloc.add(GetCurrentCityWeatherInfo(cityName));
-  //   await forecast(cityName, context);
-  // }
+  static searchCity(String cityName, BuildContext context) async {
+    final weatherCityBloc = BlocProvider.of<WeatherHomeControllerBloc>(context);
+    weatherCityBloc.add(GetCurrentCityWeatherInfo(cityName));
+    await forecast(cityName, context);
+  }
 
   static forecast(String cityName, BuildContext context) {
     final foreCastBloc = BlocProvider.of<ForecastControllerBloc>(context);
     foreCastBloc.add(GetForecast(cityName));
   }
 
-  // static getLocalData(BuildContext context) async{
-  //   final getLocalDataBloc = BlocProvider.of<GetLocalDataBloc>(context);
-  //   getLocalDataBloc.add(const GetLocalDataWeatherEvent());
-  // }
+  static getLocalData(BuildContext context) async{
+    final getLocalDataBloc = BlocProvider.of<GetLocalDataBloc>(context);
+    getLocalDataBloc.add(const GetLocalDataWeatherEvent());
+  }
 
-  // static getForeCastData(BuildContext context) {
-  //   final getForeCastLocalData = BlocProvider.of<GetForeCastBloc>(context);
-  //   getForeCastLocalData.add(const GetForeCastLocalDataEvent());
-  // }
+  static getForeCastData(BuildContext context) {
+    final getForeCastLocalData = BlocProvider.of<GetForeCastBloc>(context);
+    getForeCastLocalData.add(const GetForeCastLocalDataEvent());
+  }
 
   static getWeatherIcon(String weatherCode) {
     switch (weatherCode) {
@@ -243,14 +243,14 @@ class WeatherHome {
     return dayWithNumber;
   }
 
-  // static void saveForeCast(ForeCastModel foreCastModel, BuildContext context) {
-  //   final userBloc = BlocProvider.of<SaveForeCastBloc>(context);
-  //   userBloc.add(SaveForeCastData(foreCastModel));
-  // }
+  static void saveForeCast(ForeCastModel foreCastModel, BuildContext context) {
+    final userBloc = BlocProvider.of<SaveForeCastBloc>(context);
+    userBloc.add(SaveForeCastData(foreCastModel));
+  }
 
-  // static void saveCity(WeatherModel weatherModel, BuildContext context) {
-  //   final userBloc = BlocProvider.of<SaveDataLocalBloc>(context);
-  //   userBloc.add(SaveLocalData(weatherModel));
-  // }
+  static void saveCity(WeatherModel weatherModel, BuildContext context) {
+    final userBloc = BlocProvider.of<SaveDataLocalBloc>(context);
+    userBloc.add(SaveLocalData(weatherModel));
+  }
 
 }
