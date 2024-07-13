@@ -9,6 +9,7 @@ import 'package:weather_icons/weather_icons.dart';
 import 'package:weatherapps/const/app_color.dart';
 import 'package:weatherapps/const/app_extentions.dart';
 import 'package:weatherapps/const/utils/utils.dart';
+import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home.dart';
 import 'package:weatherapps/const/utils/weather_app_fonts.dart';
 import 'package:weatherapps/const/utils/weather_app_string.dart';
 import 'package:weatherapps/const/utils/weather_font_sizes.dart';
@@ -27,7 +28,6 @@ import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/sea
 import 'package:weatherapps/routes/weather_routes.dart';
 
 import '../../../controllers/settings_theme_controller/setting_theme_util.dart';
-import '../../../controllers/weather_home_controller/weather_home_util.dart';
 
 class WeatherUIWidget extends StatelessWidget {
   final WeatherModel weatherModel;
@@ -50,6 +50,7 @@ class WeatherUIWidget extends StatelessWidget {
                     cityNames: weatherModel.name,
                     onTap: () {
                       showModalBottomSheet(
+                          isScrollControlled: true,
                           context: context,
                           builder: (context) {
                             return const SearchBottomSheet();
@@ -72,7 +73,7 @@ class WeatherUIWidget extends StatelessWidget {
                       3.0.sizeHeight,
                       Center(
                           child: Text(
-                        HomeUtils.today(),
+                        WeatherHome.today(),
                         style: WeatherAppFonts.large(
                                 fontWeight: FontWeight.w400,
                                 color: WeatherAppColor.whiteColor)
@@ -84,7 +85,7 @@ class WeatherUIWidget extends StatelessWidget {
                       2.0.sizeHeight,
                       Center(
                           child: Text(
-                        HomeUtils.formatDateTime(
+                        Utils.formatDateTime(
                             weatherModel.updatedAt.toIso8601String()),
                         style: WeatherAppFonts.large(
                                 fontWeight: FontWeight.w300,
@@ -99,17 +100,17 @@ class WeatherUIWidget extends StatelessWidget {
                       Column(
                         children: [
                           10.0.sizeHeight,
-                          HomeUtils.getWeatherIcon(
+                          WeatherHome.getWeatherIcon(
                                       weatherModel.weather[0].icon) !=
                                   WeatherIcons.refresh
                               ? Icon(
-                                  HomeUtils.getWeatherIcon(
+                                  WeatherHome.getWeatherIcon(
                                       weatherModel.weather[0].icon),
                                   size: 100.0,
                                   color: WeatherAppColor.yellowColor,
                                 )
                               : Image.network(
-                                  HomeUtils.getWeatherIconURL(
+                                  WeatherHome.getWeatherIconURL(
                                       weatherModel.weather[0].icon),
                                   color: WeatherAppColor.yellowColor,
                                 ),
@@ -230,13 +231,13 @@ class WeatherUIWidget extends StatelessWidget {
               BlocBuilder<ForecastControllerBloc, ForecastControllerState>(
                   builder: (context, states) {
                 if (states is ForecastLoaded) {
-                  HomeUtils.saveForeCast(states.foreCastModel, context);
+                  WeatherHome.saveForeCast(states.foreCastModel, context);
                   List<ListElement> data = [];
                   data.add(states.foreCastModel.list[0]);
                   data.add(states.foreCastModel.list[1]);
                   data.add(states.foreCastModel.list[2]);
                   data.add(states.foreCastModel.list[3]);
-                  List<String> dayNext = HomeUtils.getNextFiveDays();
+                  List<String> dayNext = WeatherHome.getNextFiveDays();
                   return Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Center(
@@ -285,7 +286,7 @@ class WeatherUIWidget extends StatelessWidget {
         return RichText(
             text: TextSpan(children: <InlineSpan>[
           TextSpan(
-            text: HomeUtils.farenHeit(weatherModel.main.temp).toString(),
+            text: WeatherHome.farenHeit(weatherModel.main.temp).toString(),
             style: WeatherAppFonts.large(
                     fontWeight: FontWeight.w500,
                     color: WeatherAppColor.whiteColor)
