@@ -9,6 +9,7 @@ import 'package:weather_icons/weather_icons.dart';
 import 'package:weatherapps/const/app_color.dart';
 import 'package:weatherapps/const/app_extentions.dart';
 import 'package:weatherapps/const/utils/utils.dart';
+import 'package:weatherapps/presentation/controllers/favorite_controller/favorite_controller_bloc.dart';
 import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home.dart';
 import 'package:weatherapps/const/utils/weather_app_fonts.dart';
 import 'package:weatherapps/const/utils/weather_app_string.dart';
@@ -27,6 +28,7 @@ import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/reu
 import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/search_widget_bottomsheet.dart';
 import 'package:weatherapps/routes/weather_routes.dart';
 
+import '../../../controllers/forecast_local_controller/save_forecast_local_data_bloc.dart';
 import '../../../controllers/settings_theme_controller/setting_theme_util.dart';
 
 class WeatherUIWidget extends StatelessWidget {
@@ -36,6 +38,7 @@ class WeatherUIWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _getFavorite(context);
     return BlocBuilder<SettingsThemeBloc, SettingsThemeState>(
         builder: (context, state) {
       return Stack(children: [
@@ -69,8 +72,38 @@ class WeatherUIWidget extends StatelessWidget {
                   color: WeatherAppColor.blackColor.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(16),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       3.0.sizeHeight,
+                      BlocBuilder<FavoriteBloc, FavoriteState>(
+                          builder: (context, state) {
+                        var fav = false;
+                        if (state is FavoriteDataLoaded) {
+                          if (state.weatherModel.isNotEmpty) {
+                            var f = state.weatherModel
+                                .where((favorite) =>
+                                    favorite.name == weatherModel.name)
+                                .toList();
+                            if (f.isNotEmpty) {
+                              fav = true;
+                            }
+                          }
+                        } else if (state is DataSaved) {
+                          _getFavorite(context);
+                          fav = true;
+                        } else {
+                          log(state.toString());
+                        }
+                        return IconButton(
+                          onPressed: () {
+                            _saveFavorite(weatherModel, context);
+                          },
+                          icon: fav
+                              ? const Icon(Icons.star)
+                              : const Icon(Icons.star_border),
+                          color: Colors.amber,
+                        );
+                      }),
                       Center(
                           child: Text(
                         WeatherHome.today(),
@@ -231,7 +264,7 @@ class WeatherUIWidget extends StatelessWidget {
               BlocBuilder<ForecastControllerBloc, ForecastControllerState>(
                   builder: (context, states) {
                 if (states is ForecastLoaded) {
-                  WeatherHome.saveForeCast(states.foreCastModel, context);
+                  _saveForeCast(states.foreCastModel, context);
                   List<ListElement> data = [];
                   data.add(states.foreCastModel.list[0]);
                   data.add(states.foreCastModel.list[1]);
@@ -359,5 +392,20 @@ class WeatherUIWidget extends StatelessWidget {
                 )))
       ]));
     }
+  }
+
+  void _saveForeCast(ForeCastModel foreCastModel, BuildContext context) {
+    final userBloc = BlocProvider.of<SaveForeCastBloc>(context);
+    userBloc.add(SaveForeCastData(foreCastModel));
+  }
+
+  void _getFavorite(BuildContext context) async {
+    final favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
+    favoriteBloc.add(const GetFavoriteEvent());
+  }
+
+  void _saveFavorite(WeatherModel weatherModel, BuildContext context) {
+    final favoriteBloc = BlocProvider.of<FavoriteBloc>(context);
+    favoriteBloc.add(FavoriteSaveEvent(weatherModel));
   }
 }

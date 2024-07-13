@@ -105,6 +105,7 @@ class RemoteDataSource extends BaseRemoteDataSource {
             WeatherModel.fromJson(existingRecord.first.value);
         return Right(existingWeatherModel);
       }
+
       await cityNameStore.add(await _db, weatherModel.toJson());
       return Right(weatherModel);
     } catch (e) {
@@ -129,21 +130,6 @@ class RemoteDataSource extends BaseRemoteDataSource {
     } catch (e) {
       log(e.toString());
       return Left('Local database error ${e.toString()}');
-    }
-  }
-
-  @override
-  Future<Either<String, ForeCastModel>> getForecastLocalData() async {
-    try {
-      final foreCast = await foreCastStore.find(await _db);
-      if (foreCast.isEmpty) {
-        return const Left('No Data');
-      }
-      final getForeCast = foreCast.first;
-      final foreCastModel = ForeCastModel.fromJson(getForeCast.value);
-      return Right(foreCastModel);
-    } catch (e) {
-      return Left('Local db ${e.toString()}');
     }
   }
 
@@ -174,11 +160,14 @@ class RemoteDataSource extends BaseRemoteDataSource {
       if (existingRecord.isNotEmpty) {
         final existingWeatherModel =
             WeatherModel.fromJson(existingRecord.first.value);
+        await favoriteStore.record(weatherModel.id).delete(await _db);
+        log(existingWeatherModel.id.toString() + ""  + existingWeatherModel.name);
         return Right(existingWeatherModel);
       }
-      await cityNameStore.add(await _db, weatherModel.toJson());
+      await favoriteStore.record(weatherModel.id).add(await _db, weatherModel.toJson());
       return Right(weatherModel);
     } catch (e) {
+      log(e.toString());
       return Left(e.toString());
     }
   }
@@ -198,7 +187,23 @@ class RemoteDataSource extends BaseRemoteDataSource {
 
       return Right(favoritesModel);
     } catch (e) {
+      log(e.toString());
       return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, ForeCastModel>> getForecastLocalData() async {
+    try {
+      final foreCast = await foreCastStore.find(await _db);
+      if (foreCast.isEmpty) {
+        return const Left('No Data');
+      }
+      final getForeCast = foreCast.first;
+      final foreCastModel = ForeCastModel.fromJson(getForeCast.value);
+      return Right(foreCastModel);
+    } catch (e) {
+      return Left('Local db ${e.toString()}');
     }
   }
 
