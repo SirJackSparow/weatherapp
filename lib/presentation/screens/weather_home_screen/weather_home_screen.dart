@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:weatherapps/const/utils/utils.dart';
+import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home.dart';
 import 'package:weatherapps/const/utils/weather_app_string.dart';
 import 'package:weatherapps/data/entity/weather_entity.dart';
 import 'package:weatherapps/data/shared_pref/sharedprefs_service.dart';
@@ -12,7 +12,6 @@ import 'package:weatherapps/presentation/controllers/conectivity/internate_conne
 import 'package:weatherapps/presentation/controllers/get_local_controller/get_local_data_bloc.dart';
 import 'package:weatherapps/presentation/controllers/settings_theme_controller/settings_theme_bloc.dart';
 import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home_controller_bloc.dart';
-import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home_util.dart';
 import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/weather_offline_widget.dart';
 import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/weather_online_widget.dart';
 
@@ -73,7 +72,7 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
                   if (state is CurrentCityDataLoaded) {
                     WeatherModel weatherCityModel = state.currentCityData;
                     weatherCityModel.isCurrentCity = true;
-                    WeatherHomeUtils.saveCity(weatherCityModel, context);
+                    WeatherHome.saveCity(weatherCityModel, context);
                     return WeatherUIWidget(
                       weatherModel: weatherCityModel,
                     );
@@ -88,8 +87,8 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
                 },
               );
             } else if (state is NotConnectedState) {
-              HomeUtils.getLocalData(context);
-              HomeUtils.getForeCastData(context);
+              WeatherHome.getLocalData(context);
+              WeatherHome.getForeCastData(context);
               return BlocBuilder<GetLocalDataBloc, GetLocalDataState>(
                 builder: (context, states) {
                   if (states is GetLocalDataLoaded) {
@@ -126,7 +125,7 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
   Future<void> initLocationService() async {
     if (!await Geolocator.isLocationServiceEnabled()) {
       if (mounted) {
-        await HomeUtils.showLocationServiceDialog(context, mounted);
+        await WeatherHome.showLocationServiceDialog(context, mounted);
       }
     } else {
       dismissPermissionDialog();
@@ -141,7 +140,7 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
           if (mounted) {
-            HomeUtils.permissionDialog(
+            WeatherHome.permissionDialog(
                 context, permissionDialogKey, mounted, false, false);
           }
           return;
@@ -162,7 +161,7 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
     }
     if (mounted) {
       isLocationServiceInitialized = true;
-      await HomeUtils.getPosition(
+      await WeatherHome.getPosition(
           context, mounted, permissionDialogKey, false, false);
     }
   }
