@@ -2,15 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weatherapps/const/app_extentions.dart';
 import 'package:weatherapps/presentation/controllers/weather_home_controller/weather_home.dart';
 import 'package:weatherapps/const/utils/weather_app_string.dart';
 import 'package:weatherapps/const/utils/weather_height_width.dart';
 import 'package:weatherapps/const/utils/weather_paddings.dart';
-
-import '../../../controllers/forecast_controller/forecast_controller_bloc.dart';
-import '../../../controllers/weather_home_controller/weather_home_controller_bloc.dart';
 
 class SearchBottomSheet extends StatefulWidget {
   const SearchBottomSheet({super.key});
@@ -62,7 +58,7 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
                 return ListTile(
                   title: Text(filteredCities[index]),
                   onTap: () {
-                    _searchCity(filteredCities[index], context);
+                    WeatherHome.searchCity(filteredCities[index], context);
                     Navigator.pop(context);
                   },
                 );
@@ -98,16 +94,5 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
     setState(() {
       filteredCities = filteredList;
     });
-  }
-
-  void _searchCity(String cityName, BuildContext context) async {
-    final weatherCityBloc = BlocProvider.of<WeatherHomeControllerBloc>(context);
-    weatherCityBloc.add(GetCurrentCityWeatherInfo(cityName));
-    await _forecast(cityName, context);
-  }
-
-   _forecast(String cityName, BuildContext context) {
-    final foreCastBloc = BlocProvider.of<ForecastControllerBloc>(context);
-    foreCastBloc.add(GetForecast(cityName));
   }
 }
