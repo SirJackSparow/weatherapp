@@ -18,6 +18,9 @@ import 'package:weatherapps/presentation/screens/weather_home_screen/widgets/wea
 import '../../../const/app_color.dart';
 import '../../../const/utils/weather_app_fonts.dart';
 import '../../../const/utils/weather_font_sizes.dart';
+import '../../../routes/weather_routes.dart';
+import '../../controllers/forecast_get_local_controller/get_forecast_local_bloc.dart';
+import '../../controllers/localdatabase_controller/save_data_local_bloc.dart';
 import '../../controllers/settings_farenheit_controller/setting_farenheit_bloc.dart';
 
 class WeatherHomeScreen extends StatefulWidget {
@@ -72,7 +75,7 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
                   if (state is CurrentCityDataLoaded) {
                     WeatherModel weatherCityModel = state.currentCityData;
                     weatherCityModel.isCurrentCity = true;
-                    WeatherHome.saveCity(weatherCityModel, context);
+                    _saveCity(weatherCityModel, context);
                     return WeatherUIWidget(
                       weatherModel: weatherCityModel,
                     );
@@ -87,8 +90,8 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
                 },
               );
             } else if (state is NotConnectedState) {
-              WeatherHome.getLocalData(context);
-              WeatherHome.getForeCastData(context);
+              _getLocalData(context);
+              _getForeCastData(context);
               return BlocBuilder<GetLocalDataBloc, GetLocalDataState>(
                 builder: (context, states) {
                   if (states is GetLocalDataLoaded) {
@@ -231,6 +234,26 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
                   })
             ]),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, WeatherRoutes.favoriteRoute);
+              },
+              child: Row(children: [
+                Text(
+                  WeatherAppString.favourite,
+                  style: WeatherAppFonts.medium(
+                      fontWeight: FontWeight.w400,
+                      color: WeatherAppColor.blackColor)
+                      .copyWith(fontSize: WeatherAppFontSize.s14),
+                ),
+                Expanded(child: Container()),
+                const Icon(Icons.star, color: Colors.amber,)
+              ]),
+            ),
+          ),
         ],
       ),
     );
@@ -249,5 +272,20 @@ class _WeatherHomeState extends State<WeatherHomeScreen>
     await SharedprefsService.isFarenHeit(s);
     final blocFarenHeit = BlocProvider.of<SettingFarenheitBloc>(context);
     blocFarenHeit.add(SetSettingsFarenheitEvent(s));
+  }
+
+  void _saveCity(WeatherModel weatherModel, BuildContext context) {
+    final userBloc = BlocProvider.of<SaveDataLocalBloc>(context);
+    userBloc.add(SaveLocalData(weatherModel));
+  }
+
+  void _getLocalData(BuildContext context) async{
+    final getLocalDataBloc = BlocProvider.of<GetLocalDataBloc>(context);
+    getLocalDataBloc.add(const GetLocalDataWeatherEvent());
+  }
+
+  void _getForeCastData(BuildContext context) {
+    final getForeCastLocalData = BlocProvider.of<GetForeCastBloc>(context);
+    getForeCastLocalData.add(const GetForeCastLocalDataEvent());
   }
 }

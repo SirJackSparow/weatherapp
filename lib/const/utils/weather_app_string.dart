@@ -18,5 +18,6 @@ class WeatherAppString {
   static String farenheitName = 'FarenHeit';
   static String isDarkTheme = 'isDarkTheme';
   static String isFarenheit = 'isFarenheit';
+  static String favourite = "Favourite";
 
 }
