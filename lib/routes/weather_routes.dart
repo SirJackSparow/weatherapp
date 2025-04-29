@@ -17,7 +17,7 @@ class RouteGenerator {
       case WeatherRoutes.homePageRoute:
         return MaterialPageRoute(builder: (_) => const WeatherHomeScreen());
       case WeatherRoutes.favoriteRoute:
-        return MaterialPageRoute(builder: (_) => FavoriteScreen());
+        return MaterialPageRoute(builder: (_) => const FavoriteScreen());
       default:
         return unDefinedRoute();
     }
